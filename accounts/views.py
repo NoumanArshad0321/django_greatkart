@@ -102,6 +102,7 @@ def forgotPassword(request):
         email = request.POST['email']
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email=email)
+            print("USER ====", user)
 
             # RESET Password
             current_site = get_current_site(request)
@@ -123,6 +124,7 @@ def forgotPassword(request):
             messages.error(request, "Email not found")
             return redirect('forgotPassword')
     return render(request, 'accounts/forgotPassword.html')
+
 def resetPassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -136,6 +138,7 @@ def resetPassword_validate(request, uidb64, token):
     else:
         messages.error(request, "This link is expired!")
         return redirect('login')
+
 def resetPassword(request):
     if request.method == 'POST':
        password = request.POST.get('password')
