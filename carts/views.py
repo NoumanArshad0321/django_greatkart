@@ -151,15 +151,19 @@ def add_cart(request, product_id):
 
 
 def remove_cart(request,product_id, cart_item_id):
-    cart = Cart.objects.get(cart_id= _cart_id(request))
+    
     product = get_object_or_404(Product, id=product_id)
     try:
-        cart_item = CartItem.objects.get(product=product, cart=cart, id= cart_item_id)
-        if cart_item.quantity > 1:
-          cart_item.quantity -= 1
-          cart_item.save()
+        if request.user.is_authenticated:
+            cart_item = CartItem.objects.get( product=product, user=request.user, id= cart_item_id)
         else:
-          cart_item.delete()
+            cart = Cart.objects.get(cart_id= _cart_id(request))  
+            cart_item = CartItem.objects.get(product=product, cart=cart, id= cart_item_id)
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
     except:
         pass      
     return redirect('cart')
@@ -167,11 +171,17 @@ def remove_cart(request,product_id, cart_item_id):
 
 
 def remove_cart_item(request, product_id, cart_item_id):
-    cart = Cart.objects.get(cart_id= _cart_id(request))
+    
     product = get_object_or_404(Product, id=product_id)
-    cart_item= CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
+    
+    if request.user.is_authenticated:
+        cart_item= CartItem.objects.get(product=product, user=request.user, id=cart_item_id)
+    else:
+        cart = Cart.objects.get(cart_id= _cart_id(request))
+        cart_item= CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
     cart_item.delete()
     return redirect('cart')
+
 
 def cart(request,total=0, quantity=0, cart_item=None):
     try:
@@ -200,27 +210,37 @@ def cart(request,total=0, quantity=0, cart_item=None):
    
     return render(request,'store/cart.html',context)
 
-
 @login_required(login_url='login')
 def checkout(request, total=0, quantity=0, cart_item=None):
-    try:
-        tax = 0
-        grand_total = 0
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items= CartItem.objects.filter(cart=cart, is_active=True)
-        for cart_item in cart_items:
-            total += (cart_item.product.price*cart_item.quantity)
-            quantity += cart_item.quantity
-        tax = (2* total/100)    
-        grand_total = total + tax
-    except ObjectDoesNotExist:
-        pass        
-    context ={
-        'total':total,
-        'quantity':quantity,
-        'cart_items':cart_items,
-        'tax':tax,
-        'grand_total':grand_total
+    cart_items = []   # ✅ define here
+    tax = 0
+    grand_total = 0
 
+    try:
+        if request.user.is_authenticated:
+            # When logged in, use user’s cart items
+            cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+        else:
+            # Guest cart
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+
+        for item in cart_items:
+            total += (item.product.price * item.quantity)
+            quantity += item.quantity
+
+        tax = (2 * total / 100)    
+        grand_total = total + tax
+
+    except ObjectDoesNotExist:
+        # cart_items just stays []
+        pass        
+
+    context = {
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
+        'tax': tax,
+        'grand_total': grand_total,
     }
-    return render(request,'store/checkout.html',context)
+    return render(request, 'store/checkout.html', context)
