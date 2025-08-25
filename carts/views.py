@@ -80,7 +80,7 @@ def add_cart(request, product_id):
     
         return redirect('cart')
   
-    #    If the user is un_authenticated
+    # If the user is un_authenticated
 
     else:
         product_variation = []
@@ -185,6 +185,7 @@ def remove_cart_item(request, product_id, cart_item_id):
 
 def cart(request,total=0, quantity=0, cart_item=None):
     try:
+        cart_items = [] 
         tax = 0
         grand_total = 0
         if request.user.is_authenticated:

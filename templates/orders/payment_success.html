@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Success Message -->
+    <div class="text-center mb-5">
+        <h2 class="text-success fw-bold">✅ Payment Successful!</h2>
+        <p class="lead">Thank you, <b>{{ order.full_name }}</b>! <br>
+           Your order <span class="text-primary fw-bold">#{{ order.order_number }}</span> has been placed successfully.
+        </p>
+        <p class="text-muted">An email confirmation has been sent to <b>{{ order.email }}</b></p>
+    </div>
+
+    <div class="row">
+        <!-- Order Details -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white fw-bold">
+                    Order Details
+                </div>
+                <div class="card-body">
+                    <p><b>Full Name:</b> {{ order.full_name }}</p>
+                    <p><b>Address:</b> {{ order.full_address }}</p>
+                    <p>{{ order.city }}, {{ order.state }}, {{ order.country }}</p>
+                    <p><b>Email:</b> {{ order.email }}</p>
+                    <p><b>Phone:</b> {{ order.phone }}</p>
+                    {% if order.order_note %}
+                        <p><b>Order Note:</b> {{ order.order_note }}</p>
+                    {% endif %}
+                    <p><b>Estimated Delivery:</b> 
+                        <span class="text-success fw-bold">
+                            {{ estimated_delivery }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Ordered Products -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white fw-bold">
+                    Ordered Products
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in ordered_products %}
+                            <tr>
+                                <td>
+                                    <img src="{{ item.product.image.url }}" class="img-sm me-2" style="width:50px;height:50px;">
+                                    {{ item.product.product_name }}
+                                    <small class="d-block text-muted">
+                                        {% for v in item.variations.all %}
+                                            {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}<br>
+                                        {% endfor %}
+                                    </small>
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td>${{ item.product_price|floatformat:2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white fw-bold">
+                    Payment Summary
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-2">
+                        <dt class="col-6">Total:</dt>
+                        <dd class="col-6">${{ total }}</dd>
+                    </dl>
+                    <dl class="row mb-2">
+                        <dt class="col-6">Tax:</dt>
+                        <dd class="col-6">${{ tax }}</dd>
+                    </dl>
+                    <dl class="row mb-2">
+                        <dt class="col-6">Grand Total:</dt>
+                        <dd class="col-6 fw-bold text-dark">${{ grand_total }}</dd>
+                    </dl>
+                    <hr>
+                    <p class="text-center">
+                        <img src="{% static 'images/misc/payments.png' %}" height="30" alt="Payment Methods">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Continue Shopping -->
+    <div class="text-center mt-4">
+        <a href="{% url 'store' %}" class="btn btn-lg btn-primary">🛒 Continue Shopping</a>
+    </div>
+
+</div>
+{% endblock %}

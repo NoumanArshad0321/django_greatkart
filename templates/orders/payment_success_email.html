@@ -1,0 +1,16 @@
+{% autoescape off %}
+Hi {{ order.full_name }},
+
+✅ Your payment for order <b>#{{ order.order_number }}</b> was successful!
+
+Order Details:
+{% for item in ordered_products %}
+- {{ item.product.product_name }} | Quantity: {{ item.quantity }} | Price: ${{ item.product_price }}
+{% endfor %}
+
+Total: ${{ grand_total }}
+Tax: ${{ tax }}
+Estimated Delivery: {{ estimated_delivery }}
+
+Thank you for shopping with us!
+{% endautoescape %}
