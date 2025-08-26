@@ -6,65 +6,69 @@
 
     <!-- Success Message -->
     <div class="text-center mb-5">
-        <h2 class="text-success fw-bold">✅ Payment Successful!</h2>
-        <p class="lead">Thank you, <b>{{ order.full_name }}</b>! <br>
-           Your order <span class="text-primary fw-bold">#{{ order.order_number }}</span> has been placed successfully.
+        <h2 class="text-success fw-bold display-5">🎉 Payment Successful!</h2>
+        <p class="lead mt-3">Thank you, <strong>{{ order.full_name }}</strong>!<br>
+           Your order <span class="badge bg-primary fs-5">#{{ order.order_number }}</span> has been successfully placed.
         </p>
-        <p class="text-muted">An email confirmation has been sent to <b>{{ order.email }}</b></p>
+        <p class="text-muted">A confirmation email has been sent to <strong>{{ order.email }}</strong></p>
     </div>
 
-    <div class="row">
+    <div class="row gx-5">
         <!-- Order Details -->
-        <div class="col-lg-8">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-primary text-white fw-bold">
+        <div class="col-lg-7 mb-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-dark text-white fw-bold fs-5 rounded-top-4">
                     Order Details
                 </div>
                 <div class="card-body">
-                    <p><b>Full Name:</b> {{ order.full_name }}</p>
-                    <p><b>Address:</b> {{ order.full_address }}</p>
+                    <p><strong>Full Name:</strong> {{ order.full_name }}</p>
+                    <p><strong>Address:</strong> {{ order.address_line_1 }}, {{ order.address_line_2 }}</p>
                     <p>{{ order.city }}, {{ order.state }}, {{ order.country }}</p>
-                    <p><b>Email:</b> {{ order.email }}</p>
-                    <p><b>Phone:</b> {{ order.phone }}</p>
+                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p><strong>Phone:</strong> {{ order.phone }}</p>
                     {% if order.order_note %}
-                        <p><b>Order Note:</b> {{ order.order_note }}</p>
+                        <p><strong>Order Note:</strong> {{ order.order_note }}</p>
                     {% endif %}
-                    <p><b>Estimated Delivery:</b> 
-                        <span class="text-success fw-bold">
-                            {{ estimated_delivery }}
-                        </span>
+                    <p><strong>Estimated Delivery:</strong> 
+                        <span class="text-success fw-bold">{{ estimated_delivery }}</span>
                     </p>
                 </div>
             </div>
 
             <!-- Ordered Products -->
-            <div class="card shadow-sm">
-                <div class="card-header bg-dark text-white fw-bold">
+            <div class="card shadow-sm border-0 rounded-4 mt-4">
+                <div class="card-header bg-secondary text-white fw-bold fs-5 rounded-top-4">
                     Ordered Products
                 </div>
-                <div class="card-body">
-                    <table class="table table-borderless">
-                        <thead>
+                <div class="card-body p-0">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
                             <tr>
                                 <th>Product</th>
                                 <th>Qty</th>
-                                <th>Total</th>
+                                <th class="text-end">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in ordered_products %}
                             <tr>
-                                <td>
-                                    <img src="{{ item.product.image.url }}" class="img-sm me-2" style="width:50px;height:50px;">
-                                    {{ item.product.product_name }}
-                                    <small class="d-block text-muted">
-                                        {% for v in item.variations.all %}
-                                            {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}<br>
-                                        {% endfor %}
-                                    </small>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ item.product.image.url }}" class="rounded me-3" style="width:60px; height:60px; object-fit:cover;">
+                                        <div>
+                                            <strong>{{ item.product.product_name }}</strong>
+                                            {% if item.variations.all %}
+                                            <small class="d-block text-muted">
+                                                {% for v in item.variations.all %}
+                                                    {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </td>
-                                <td>{{ item.quantity }}</td>
-                                <td>${{ item.product_price|floatformat:2 }}</td>
+                                <td class="align-middle">{{ item.quantity }}</td>
+                                <td class="align-middle text-end">${{ item.product_price|floatformat:2 }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -74,37 +78,35 @@
         </div>
 
         <!-- Payment Summary -->
-        <div class="col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-secondary text-white fw-bold">
+        <div class="col-lg-5 mb-4">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-primary text-white fw-bold fs-5 rounded-top-4">
                     Payment Summary
                 </div>
                 <div class="card-body">
                     <dl class="row mb-2">
-                        <dt class="col-6">Total:</dt>
-                        <dd class="col-6">${{ total }}</dd>
+                        <dt class="col-6">Subtotal:</dt>
+                        <dd class="col-6 text-end">${{ total|floatformat:2 }}</dd>
                     </dl>
                     <dl class="row mb-2">
                         <dt class="col-6">Tax:</dt>
-                        <dd class="col-6">${{ tax }}</dd>
+                        <dd class="col-6 text-end">${{ tax|floatformat:2 }}</dd>
                     </dl>
-                    <dl class="row mb-2">
-                        <dt class="col-6">Grand Total:</dt>
-                        <dd class="col-6 fw-bold text-dark">${{ grand_total }}</dd>
+                    <dl class="row mb-3">
+                        <dt class="col-6 fw-bold">Grand Total:</dt>
+                        <dd class="col-6 text-end fw-bold fs-5">${{ grand_total|floatformat:2 }}</dd>
                     </dl>
                     <hr>
                     <p class="text-center">
-                        <img src="{% static 'images/misc/payments.png' %}" height="30" alt="Payment Methods">
+                        <img src="{% static 'images/misc/payments.png' %}" height="40" alt="Payment Methods">
                     </p>
                 </div>
             </div>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'store' %}" class="btn btn-lg btn-outline-primary rounded-pill px-5 py-2">🛒 Continue Shopping</a>
+            </div>
         </div>
     </div>
-
-    <!-- Continue Shopping -->
-    <div class="text-center mt-4">
-        <a href="{% url 'store' %}" class="btn btn-lg btn-primary">🛒 Continue Shopping</a>
-    </div>
-
 </div>
 {% endblock %}

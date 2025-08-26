@@ -40,6 +40,8 @@ class Variation(models.Model):
    variation_value  =   models.CharField(max_length=100)
    is_active =     models.BooleanField(default=True)
    created_date = models.DateTimeField(auto_now=True)
+   image = models.ImageField(upload_to='photos/product_variations', blank=True, null=True)
+   
 
    objects = VariationManager()
 

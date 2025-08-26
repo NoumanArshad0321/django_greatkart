@@ -32,22 +32,29 @@ def store(request, category_slug=None):
         'product_count': product_count
      }
      return render(request, 'store/store.html',context)
+def product_detail(request, category_slug, product_slug):
+    try:
+        single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
 
-def product_detail(request,category_slug,product_slug):
-      try:
-            single_product= Product.objects.get(category__slug=category_slug, slug=product_slug)
-            in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
-         
-      except Exception as e:
-         raise e
-      
-      context = {
-           'single_product': single_product,
-           'in_cart': in_cart,
-           
-      }
-              
-      return  render(request,'store/product_detail.html',context)
+        # New: fetch variations for this product
+        from store.models import Variation
+        color_variations = Variation.objects.filter(product=single_product, variation_category='color', is_active=True)
+        size_variations = Variation.objects.filter(product=single_product, variation_category='size', is_active=True)
+
+    except Exception as e:
+        raise e
+
+    context = {
+        'single_product': single_product,
+        'in_cart': in_cart,
+        # New: send variations to template
+        'color_variations': color_variations,
+        'size_variations': size_variations,
+    }
+
+    return render(request, 'store/product_detail.html', context)
+
 def search(request):
      if 'keyword' in request.GET:
           keyword = request.GET['keyword']

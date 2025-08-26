@@ -1,68 +1,161 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 
-
-
-
-<!-- ========================= SECTION MAIN ========================= -->
-<section class="section-intro padding-y-sm">
-<div class="container">
-
-<div class="intro-banner-wrap">
-	<img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid rounded">
-</div>
-
-</div> <!-- container //  -->
+<!-- ========================= HERO BANNER ========================= -->
+<section class="section-intro position-relative padding-y-sm overflow-hidden">
+    <div class="container">
+        <div class="intro-banner-wrap rounded shadow-lg position-relative banner-parallax" data-aos="fade-up">
+            <img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid w-100">
+            <div class="banner-overlay position-absolute top-0 start-0 w-100 h-100"></div>
+            <div class="banner-text position-absolute top-50 start-50 translate-middle text-center text-white">
+                <h1 class="display-4 fw-bold mb-2">Discover Premium Collections</h1>
+                <p class="lead mb-3">Exclusive deals and top-notch products</p>
+                <a href="{% url 'store' %}" class="btn btn-primary btn-lg shadow-sm">Shop Now</a>
+            </div>
+        </div>
+    </div>
 </section>
-<!-- ========================= SECTION MAIN END// ========================= -->
 
-<!-- ========================= SECTION  ========================= -->
-<section class="section-name padding-y-sm">
-<div class="container">
+<!-- ========================= POPULAR PRODUCTS ========================= -->
+<section class="section-name padding-y-lg bg-light">
+    <div class="container">
+        <header class="section-heading mb-5 text-center" data-aos="fade-down">
+            <h3 class="section-title fw-bold">Popular Products</h3>
+        </header>
 
-<header class="section-heading">
-	<a href="{% url 'store' %}" class="btn btn-outline-primary float-right">See all</a>
-	<h3 class="section-title">Popular products</h3>
-</header><!-- sect-heading -->
-
-	
-<div class="row">
-	{% for product in products %}
-	
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.image.url }}"> </a>
-			<figcaption class="info-wrap">
-				<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
-				<div class="price mt-1">$ {{ product.price }}</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> 
-	{% endfor %}
-	<!-- col.// -->
-	
-	
- </div> <!-- col.// --> <!-- row.// -->
-
-</div><!-- container // -->
+        <div class="row g-5">
+            {% for product in products %}
+            <div class="col-12 col-sm-6 col-md-3" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:"1" }}00">
+                <div class="card card-product-grid shadow-sm h-100 hover-scale rounded bg-white p-3">
+                    <a href="{{ product.get_url }}" class="img-wrap overflow-hidden rounded-top d-block mb-3">
+                        <img src="{{ product.image.url }}" class="img-fluid transition-scale">
+                    </a>
+                    <figcaption class="info-wrap text-center">
+                        <a href="{{ product.get_url }}" class="title d-block fw-semibold text-dark mb-2">{{ product.product_name }}</a>
+                        <div class="price fw-bold text-primary mb-2">$ {{ product.price }}</div>
+                    </figcaption>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </section>
-<!-- ========================= SECTION  END// ========================= -->
 
+<!-- ========================= WHY SHOP WITH US ========================= -->
+<section class="section-featured py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-5 fw-bold" data-aos="fade-down">Why Shop With Us?</h2>
+        <div class="row g-5 justify-content-center">
+            <div class="col-12 col-sm-6 col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded hover-scale bg-white">
+                    <i class="fas fa-shipping-fast fa-3x mb-3 text-primary"></i>
+                    <h5 class="fw-semibold mb-2">Fast Shipping</h5>
+                    <p class="mb-0">Get your products delivered in record time.</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded hover-scale bg-white">
+                    <i class="fas fa-award fa-3x mb-3 text-primary"></i>
+                    <h5 class="fw-semibold mb-2">Premium Quality</h5>
+                    <p class="mb-0">Only top-quality products from trusted brands.</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4" data-aos="zoom-in" data-aos-delay="300">
+                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded hover-scale bg-white">
+                    <i class="fas fa-headset fa-3x mb-3 text-primary"></i>
+                    <h5 class="fw-semibold mb-2">24/7 Support</h5>
+                    <p class="mb-0">We are always here to help you with your needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-
-
-
-
-</body>
-</html>
-
-
-{% comment %} CANCEL_REASON_CODE = [
-{
-    ("")
+<!-- ========================= STYLES ========================= -->
+<style>
+/* Hero banner overlay */
+.banner-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.5));
 }
-] {% endcomment %}
+
+/* Parallax effect */
+.banner-parallax {
+    position: relative;
+    overflow: hidden;
+}
+.banner-parallax img {
+    transform: translateY(0);
+    transition: transform 0.2s ease-out;
+}
+
+/* Card hover & scale */
+.hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-scale:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Product image transition */
+.transition-scale img {
+    transition: transform 0.3s ease;
+}
+.transition-scale:hover img {
+    transform: scale(1.05);
+}
+
+/* Banner text shadow */
+.banner-text h1, .banner-text p {
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Section titles */
+.section-title::after {
+    content: '';
+    width: 60px;
+    height: 3px;
+    background: #0066cc;
+    display: block;
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+
+/* Product row spacing */
+.section-name .row {
+    margin-bottom: 3rem;
+}
+
+/* Card background */
+.card-product-grid, .section-featured .card {
+    background-color: #ffffff; 
+}
+.section-featured i {
+    transition: transform 0.3s ease;
+}
+.section-featured .card:hover i {
+    transform: scale(1.1);
+}
+</style>
+
+<!-- ========================= AOS LIBRARY ========================= -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    once: true,
+    easing: 'ease-in-out',
+  });
+
+  // Simple parallax for hero banner
+  window.addEventListener('scroll', function() {
+      const banner = document.querySelector('.banner-parallax img');
+      const scrollPos = window.scrollY;
+      banner.style.transform = 'translateY(' + scrollPos * 0.3 + 'px)';
+  });
+</script>
+
 {% endblock %}

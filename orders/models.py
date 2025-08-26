@@ -61,8 +61,6 @@ class OrderProduct(models.Model):
      product = models.ForeignKey(Product, on_delete=models.CASCADE)
     #  variations = models.ManyToManyField(Variation, blank=True)
      variations = models.ManyToManyField(Variation, blank=True) 
-     color = models.CharField(max_length=100)
-     size = models.CharField(max_length=100)
      quantity = models.IntegerField()
      product_price = models.FloatField()
      ordered = models.BooleanField(default=False)
