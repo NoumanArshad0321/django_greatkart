@@ -5,16 +5,21 @@ import stripe
 from django.utils import timezone
 
 from carts.models import CartItem
+from store.models import Product
 from greatkart import settings
 from orders.models import Order, OrderProduct, Payment
 from .forms import OrderForm
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
-# Create your views here.
+
+# ---------------- Payments Page ----------------
 def payments(request):
     return render(request, 'orders/payments.html')
 
 
+# ---------------- Place Order ----------------
 def place_order(request, total=0, quantity=0):
     current_user = request.user
 
@@ -29,7 +34,7 @@ def place_order(request, total=0, quantity=0):
     for cart_item in cart_items:
         total += (cart_item.product.price * cart_item.quantity)
         quantity += cart_item.quantity
-    tax = (2 * total)/100
+    tax = (2 * total) / 100
     grand_total = total + tax
 
     if request.method == "POST":
@@ -64,7 +69,7 @@ def place_order(request, total=0, quantity=0):
 
             order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
 
-            # ---------------- FIX: Create OrderProduct entries ----------------
+            # 🔥 CHANGED: Create OrderProduct entries here
             for cart_item in cart_items:
                 order_product = OrderProduct.objects.create(
                     order=order,
@@ -76,7 +81,6 @@ def place_order(request, total=0, quantity=0):
                 )
                 order_product.variations.set(cart_item.variations.all())
                 order_product.save()
-            # ------------------------------------------------------------------
 
             context = {
                 'order': order,
@@ -114,18 +118,7 @@ def create_checkout_session(request, order_id):
         cancel_url=YOUR_DOMAIN + '/orders/payment_cancel/',
     )
 
-    cart_items = CartItem.objects.filter(user=request.user)
-    
-    for item in cart_items:
-        orderproduct = OrderProduct()
-        orderproduct.order_id = order.id 
-        orderproduct.payment = checkout_session
-        orderproduct.user_id = request.user.id
-        orderproduct.product_id = item.product.id
-        orderproduct.quantity = item.quantity
-        orderproduct.product_price = item.product.price
-        orderproduct.ordered = True
-        orderproduct.save()
+    # 🔥 REMOVED: don’t create OrderProducts here (already created in place_order)
 
     return redirect(checkout_session.url, code=303)
 
@@ -138,6 +131,7 @@ def payment_success(request):
     
     order = get_object_or_404(Order, id=order_id, user=request.user)
     
+    
     payment = Payment.objects.create(
         user=request.user,
         payment_id=session_id,
@@ -146,23 +140,46 @@ def payment_success(request):
         status="Completed",
     )
     
+    
     order.payment = payment
     order.is_ordered = True
     order.save()
     
-    ordered_products = OrderProduct.objects.filter(order=order)
     
+    ordered_products = OrderProduct.objects.filter(order=order)
     for item in ordered_products:
+        item.payment = payment
         item.ordered = True
         item.save()
-    
+        product = Product.objects.get(id=item.product_id)
+        product.stock -= item.quantity
+        product.save()
+
     CartItem.objects.filter(user=request.user).delete()
-    
+
+    payment = Payment.objects.filter(payment_id=session_id).first()
     total = sum([item.product_price * item.quantity for item in ordered_products])
     tax = order.tax
     grand_total = order.order_total
     
     estimated_delivery = (timezone.now() + datetime.timedelta(days=3)).strftime("%d %b, %Y")
+
+    mail_subject = 'Thank You for Your Order'
+    message = render_to_string('orders/payment_success_email.html', {
+    'user': request.user,
+    'order': order,
+    'ordered_products': ordered_products,
+    'total': total,
+    'tax': tax,
+    'grand_total': grand_total,
+    'estimated_delivery': estimated_delivery,
+})
+
+    to_email = request.user.email
+    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.send()
+    
+   
     
     context = {
         "order": order,
@@ -171,6 +188,7 @@ def payment_success(request):
         "tax": tax,
         "grand_total": grand_total,
         "estimated_delivery": estimated_delivery,
+        "payment":payment
     }
     
     return render(request, "orders/payment_success.html", context)
@@ -179,4 +197,3 @@ def payment_success(request):
 @login_required
 def payment_cancel(request):
     return render(request, "orders/payment_cancel.html")
-

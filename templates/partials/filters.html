@@ -1,0 +1,37 @@
+<div class="accordion" id="filterAccordion">
+  
+  <!-- Categories -->
+  <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+    <h2 class="accordion-header">
+      <button class="accordion-button bg-light fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategories">
+        Categories
+      </button>
+    </h2>
+    <div id="collapseCategories" class="accordion-collapse collapse show">
+      <div class="accordion-body">
+        <ul class="list-unstyled mb-0">
+          <li><a href="{% url 'store' %}" class="text-decoration-none text-dark">All Products</a></li>
+          {% for category in links %}
+            <li><a href="{{category.get_url}}" class="text-decoration-none text-dark">{{category.category_name}}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Range -->
+  <div class="accordion-item border-0 shadow-sm mb-3 rounded-3">
+    <h2 class="accordion-header">
+      <button class="accordion-button bg-light fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice">
+        Price Range
+      </button>
+    </h2>
+    <div id="collapsePrice" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <input type="range" class="form-range" min="0" max="2000" step="50">
+        <button class="btn btn-dark w-100 rounded-pill mt-3">Apply</button>
+      </div>
+    </div>
+  </div>
+
+</div>

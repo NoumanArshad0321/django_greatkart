@@ -149,7 +149,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'noumanarshad480@gmail.com'
-EMAIL_HOST_PASSWORD = 'ttiy rhfd vpza nisg'
+EMAIL_HOST_PASSWORD = 'jlpe blzn shjc qdgb'
 
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',

@@ -2,110 +2,100 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-3" style="max-width: 600px;">
 
-    <!-- Success Message -->
-    <div class="text-center mb-5">
-        <h2 class="text-success fw-bold display-5">🎉 Payment Successful!</h2>
-        <p class="lead mt-3">Thank you, <strong>{{ order.full_name }}</strong>!<br>
-           Your order <span class="badge bg-primary fs-5">#{{ order.order_number }}</span> has been successfully placed.
-        </p>
-        <p class="text-muted">A confirmation email has been sent to <strong>{{ order.email }}</strong></p>
-    </div>
+    <!-- Receipt Wrapper -->
+    <div class="card shadow border-0 rounded-3">
+        <div class="card-body p-4">
 
-    <div class="row gx-5">
-        <!-- Order Details -->
-        <div class="col-lg-7 mb-4">
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-header bg-dark text-white fw-bold fs-5 rounded-top-4">
-                    Order Details
-                </div>
-                <div class="card-body">
-                    <p><strong>Full Name:</strong> {{ order.full_name }}</p>
-                    <p><strong>Address:</strong> {{ order.address_line_1 }}, {{ order.address_line_2 }}</p>
-                    <p>{{ order.city }}, {{ order.state }}, {{ order.country }}</p>
-                    <p><strong>Email:</strong> {{ order.email }}</p>
-                    <p><strong>Phone:</strong> {{ order.phone }}</p>
+            <!-- Header -->
+            <div class="text-center mb-3">
+                <img src="{% static 'images/logo.png' %}" alt="Brand Logo" height="45" class="mb-2">
+                <h5 class="text-success fw-bold mb-1">✅ Payment Successful</h5>
+                <small class="fw-bold text-muted">Payment ID: {{ payment.payment_id }}</small>
+                <small class="text-muted">Order #{{ order.order_number }}</small>
+                <p class="small text-muted mt-1">
+                    A receipt has been sent to <strong>{{ order.email }}</strong>
+                </p>
+            </div>
+
+            <hr class="my-3">
+
+            <!-- Order + Payment Info -->
+            <div class="row g-3">
+                <!-- Order Info -->
+                <div class="col-12">
+                    <h6 class="fw-bold">🧾 Order Details</h6>
+                    <small><strong>Name:</strong> {{ order.full_name }}</small><br>
+                    <small><strong>Phone:</strong> {{ order.phone }}</small><br>
+                    <small><strong>Address:</strong> {{ order.address_line_1 }}, {{ order.address_line_2 }}, {{ order.city }}, {{ order.state }}, {{ order.country }}</small>
                     {% if order.order_note %}
-                        <p><strong>Order Note:</strong> {{ order.order_note }}</p>
+                        <br><small><strong>Note:</strong> {{ order.order_note }}</small>
                     {% endif %}
-                    <p><strong>Estimated Delivery:</strong> 
-                        <span class="text-success fw-bold">{{ estimated_delivery }}</span>
-                    </p>
+                    <p class="small text-success fw-bold mt-2">Est. Delivery: {{ estimated_delivery }}</p>
                 </div>
             </div>
 
-            <!-- Ordered Products -->
-            <div class="card shadow-sm border-0 rounded-4 mt-4">
-                <div class="card-header bg-secondary text-white fw-bold fs-5 rounded-top-4">
-                    Ordered Products
-                </div>
-                <div class="card-body p-0">
-                    <table class="table align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Product</th>
-                                <th>Qty</th>
-                                <th class="text-end">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in ordered_products %}
-                            <tr>
-                                <td class="align-middle">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ item.product.image.url }}" class="rounded me-3" style="width:60px; height:60px; object-fit:cover;">
-                                        <div>
-                                            <strong>{{ item.product.product_name }}</strong>
-                                            {% if item.variations.all %}
-                                            <small class="d-block text-muted">
-                                                {% for v in item.variations.all %}
-                                                    {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}{% if not forloop.last %}, {% endif %}
-                                                {% endfor %}
-                                            </small>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="align-middle">{{ item.quantity }}</td>
-                                <td class="align-middle text-end">${{ item.product_price|floatformat:2 }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+            <hr class="my-3">
 
-        <!-- Payment Summary -->
-        <div class="col-lg-5 mb-4">
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-header bg-primary text-white fw-bold fs-5 rounded-top-4">
-                    Payment Summary
-                </div>
-                <div class="card-body">
-                    <dl class="row mb-2">
-                        <dt class="col-6">Subtotal:</dt>
-                        <dd class="col-6 text-end">${{ total|floatformat:2 }}</dd>
-                    </dl>
-                    <dl class="row mb-2">
-                        <dt class="col-6">Tax:</dt>
-                        <dd class="col-6 text-end">${{ tax|floatformat:2 }}</dd>
-                    </dl>
-                    <dl class="row mb-3">
-                        <dt class="col-6 fw-bold">Grand Total:</dt>
-                        <dd class="col-6 text-end fw-bold fs-5">${{ grand_total|floatformat:2 }}</dd>
-                    </dl>
-                    <hr>
-                    <p class="text-center">
-                        <img src="{% static 'images/misc/payments.png' %}" height="40" alt="Payment Methods">
-                    </p>
-                </div>
+            <!-- Ordered Items Inline -->
+            <div class="mb-3">
+                <h6 class="fw-bold">📦 Items</h6>
+                <ul class="list-unstyled mb-0">
+                    {% for item in ordered_products %}
+                    <li class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ item.product.image.url }}" 
+                                 class="rounded me-2" 
+                                 style="width:40px; height:40px; object-fit:cover;">
+                            <div>
+                                <small class="fw-bold">{{ item.product.product_name }}</small><br>
+                                {% if item.variations.all %}
+                                    <small class="text-muted">
+                                        {% for v in item.variations.all %}
+                                            {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <small class="text-muted">x{{ item.quantity }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
 
-            <div class="text-center mt-4">
-                <a href="{% url 'store' %}" class="btn btn-lg btn-outline-primary rounded-pill px-5 py-2">🛒 Continue Shopping</a>
+            <!-- Payment Summary -->
+            <div class="mb-3">
+                <h6 class="fw-bold">💳 Payment</h6>
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td class="text-end">${{ total|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tax:</td>
+                        <td class="text-end">${{ tax|floatformat:2 }}</td>
+                    </tr>
+                    <tr class="fw-bold border-top">
+                        <td>Total:</td>
+                        <td class="text-end">${{ grand_total|floatformat:2 }}</td>
+                    </tr>
+                </table>
             </div>
+
+            <hr class="my-3">
+
+            <!-- Actions -->
+            <div class="text-center">
+                <a href="{% url 'store' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3 me-2">
+                    🛒 Shop More
+                </a>
+                <button onclick="window.print()" class="btn btn-sm btn-primary rounded-pill px-3">
+                    🖨 Print
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
