@@ -3,38 +3,36 @@
 
 {% block content %}
 
-<!-- ========================= HERO BANNER ========================= -->
-<section class="section-intro position-relative padding-y-sm overflow-hidden">
+<section class="section-intro position-relative padding-y-lg overflow-hidden">
     <div class="container">
-        <div class="intro-banner-wrap rounded shadow-lg position-relative banner-parallax" data-aos="fade-up">
-            <img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid w-100">
+        <div class="intro-banner-wrap rounded-4 shadow-lg position-relative banner-parallax" data-aos="fade-up">
+            <a href="{% url 'store' %}"><img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid w-100"></a>
             <div class="banner-overlay position-absolute top-0 start-0 w-100 h-100"></div>
-            <div class="banner-text position-absolute top-50 start-50 translate-middle text-center text-white">
-                <h1 class="display-4 fw-bold mb-2">Discover Premium Collections</h1>
-                <p class="lead mb-3">Exclusive deals and top-notch products</p>
-                <a href="{% url 'store' %}" class="btn btn-primary btn-lg shadow-sm">Shop Now</a>
+            <div class="banner-text position-absolute top-50 start-0 translate-middle-y text-white p-4 p-md-5">
+                <h1 class="display-4 fw-bold mb-3" data-aos="fade-right" data-aos-delay="200">Discover Our <br>Latest Collections</h1>
+                <p class="lead mb-4 w-75 d-none d-md-block" data-aos="fade-right" data-aos-delay="400">Exclusive deals on the latest styles, from comfortable clothes to durable boots. Find your perfect fit today.</p>
+                <a href="{% url 'store' %}" class="btn btn-primary btn-lg shadow-sm" data-aos="fade-right" data-aos-delay="600">Shop Now</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ========================= POPULAR PRODUCTS ========================= -->
 <section class="section-name padding-y-lg bg-light">
     <div class="container">
         <header class="section-heading mb-5 text-center" data-aos="fade-down">
             <h3 class="section-title fw-bold">Popular Products</h3>
         </header>
 
-        <div class="row g-5">
+        <div class="row g-4 justify-content-center">
             {% for product in products %}
-            <div class="col-12 col-sm-6 col-md-3" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:"1" }}00">
-                <div class="card card-product-grid shadow-sm h-100 hover-scale rounded bg-white p-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:"1" }}00">
+                <div class="card card-product-grid shadow-sm h-100 hover-scale rounded-3 bg-white p-3 border-0">
                     <a href="{{ product.get_url }}" class="img-wrap overflow-hidden rounded-top d-block mb-3">
                         <img src="{{ product.image.url }}" class="img-fluid transition-scale">
                     </a>
                     <figcaption class="info-wrap text-center">
                         <a href="{{ product.get_url }}" class="title d-block fw-semibold text-dark mb-2">{{ product.product_name }}</a>
-                        <div class="price fw-bold text-primary mb-2">$ {{ product.price }}</div>
+                        <div class="price fw-bold text-primary mb-2">${{ product.price }}</div>
                     </figcaption>
                 </div>
             </div>
@@ -43,41 +41,78 @@
     </div>
 </section>
 
-<!-- ========================= WHY SHOP WITH US ========================= -->
-<section class="section-featured py-5 bg-light">
+<section class="section-featured py-5 bg-white">
     <div class="container text-center">
         <h2 class="mb-5 fw-bold" data-aos="fade-down">Why Shop With Us?</h2>
-        <div class="row g-5 justify-content-center">
+        <div class="row g-4 justify-content-center">
             <div class="col-12 col-sm-6 col-md-4" data-aos="zoom-in" data-aos-delay="100">
-                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded hover-scale bg-white">
+                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded-3 hover-scale bg-white">
                     <i class="fas fa-shipping-fast fa-3x mb-3 text-primary"></i>
                     <h5 class="fw-semibold mb-2">Fast Shipping</h5>
-                    <p class="mb-0">Get your products delivered in record time.</p>
+                    <p class="mb-0">Get your products delivered in record time, right to your doorstep.</p>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4" data-aos="zoom-in" data-aos-delay="200">
-                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded hover-scale bg-white">
+                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded-3 hover-scale bg-white">
                     <i class="fas fa-award fa-3x mb-3 text-primary"></i>
                     <h5 class="fw-semibold mb-2">Premium Quality</h5>
-                    <p class="mb-0">Only top-quality products from trusted brands.</p>
+                    <p class="mb-0">Only top-quality products from trusted brands, built to last.</p>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-4" data-aos="zoom-in" data-aos-delay="300">
-                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded hover-scale bg-white">
+                <div class="card border-0 shadow-sm p-4 h-100 text-center rounded-3 hover-scale bg-white">
                     <i class="fas fa-headset fa-3x mb-3 text-primary"></i>
                     <h5 class="fw-semibold mb-2">24/7 Support</h5>
-                    <p class="mb-0">We are always here to help you with your needs.</p>
+                    <p class="mb-0">We are always here to help you with your needs, day or night.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ========================= STYLES ========================= -->
 <style>
-/* Hero banner overlay */
+/* New Color Palette & Fonts */
+:root {
+    --primary-color: #1a237e; /* Deep Blue */
+    --accent-color: #00bcd4; /* Cyan */
+    --text-color: #333;
+    --bg-light: #f5f5f5;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+}
+
+.text-primary { color: var(--primary-color) !important; }
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #2c388e; /* Slightly darker shade for distinct hover */
+    border-color: #2c388e;
+}
+
+/* Hero banner overlay and text */
 .banner-overlay {
-    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.5));
+    background-color: rgba(26, 35, 126, 0.7); /* Solid semi-transparent blue */
+}
+.banner-text {
+    max-width: 500px;
+}
+.banner-text h1 {
+    text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+@media (max-width: 767.98px) {
+    .banner-text {
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        text-align: center;
+    }
 }
 
 /* Parallax effect */
@@ -89,27 +124,25 @@
     transform: translateY(0);
     transition: transform 0.2s ease-out;
 }
+.banner-parallax:hover img {
+    transform: scale(1.03); /* Subtle zoom on hover */
+}
 
 /* Card hover & scale */
 .hover-scale {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
 }
 .hover-scale:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08) !important;
 }
 
 /* Product image transition */
 .transition-scale img {
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 .transition-scale:hover img {
-    transform: scale(1.05);
-}
-
-/* Banner text shadow */
-.banner-text h1, .banner-text p {
-    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    transform: scale(1.08);
 }
 
 /* Section titles */
@@ -117,15 +150,10 @@
     content: '';
     width: 60px;
     height: 3px;
-    background: #0066cc;
+    background: var(--primary-color);
     display: block;
     margin: 8px auto 0;
     border-radius: 2px;
-}
-
-/* Product row spacing */
-.section-name .row {
-    margin-bottom: 3rem;
 }
 
 /* Card background */
@@ -140,22 +168,24 @@
 }
 </style>
 
-<!-- ========================= AOS LIBRARY ========================= -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
-  AOS.init({
-    duration: 800,
-    once: true,
-    easing: 'ease-in-out',
-  });
+    AOS.init({
+        duration: 800,
+        once: true,
+        easing: 'ease-in-out',
+    });
 
-  // Simple parallax for hero banner
-  window.addEventListener('scroll', function() {
-      const banner = document.querySelector('.banner-parallax img');
-      const scrollPos = window.scrollY;
-      banner.style.transform = 'translateY(' + scrollPos * 0.3 + 'px)';
-  });
+    // Simple parallax for hero banner
+    window.addEventListener('scroll', function() {
+        const banner = document.querySelector('.banner-parallax img');
+        if (banner) {
+            const scrollPos = window.scrollY;
+            banner.style.transform = 'translateY(' + scrollPos * 0.3 + 'px)';
+        }
+    });
 </script>
 
 {% endblock %}

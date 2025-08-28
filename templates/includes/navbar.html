@@ -1,7 +1,88 @@
 {% load static %}
 
+<style>
+/* Color Palette */
+:root {
+    --primary-color: #1a237e; /* Deep Blue */
+}
+
+/* General Header Styles */
+.section-header {
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Top Navbar */
+.navbar-top {
+    padding: 0.5rem 0;
+}
+.navbar-top a.nav-link {
+    color: #555;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+.navbar-top a.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Main Header Section */
+.header-main {
+    padding: 1rem 0;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #2c388e;
+    border-color: #2c388e;
+}
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+}
+
+/* Cart Widget */
+.widget-header .icon-sm {
+    border-color: var(--primary-color) !important;
+    transition: all 0.3s ease;
+}
+.widget-header .fa-shopping-cart {
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+.widget-header:hover .icon-sm {
+    background-color: var(--primary-color);
+}
+.widget-header:hover .fa-shopping-cart {
+    color: #ffffff;
+}
+.badge-danger {
+    background-color: var(--primary-color) !important;
+}
+
+/* Search Bar */
+.search .form-control {
+    border-right: none;
+}
+.search .input-group-append .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+</style>
+
 <header class="section-header">
-  <nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
+  <nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom navbar-top">
     <div class="container">
       <button
         class="navbar-toggler"
@@ -35,21 +116,17 @@
             </a>
           </li>
         </ul>
-        <!-- list-inline //  -->
       </div>
-      <!-- navbar-collapse .// -->
     </div>
-    <!-- container //  -->
   </nav>
 
-  <section class="header-main border-bottom">
+  <section class="header-main">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-2 col-md-3 col-6">
           <a href="{% url 'home' %}" class="brand-wrap">
             <img class="logo" src="{% static 'images/logo.png' %}" />
           </a>
-          <!-- brand-wrap.// -->
         </div>
         <div class="col-lg col-sm col-md col-6 flex-grow-0">
           <div class="category-wrap dropdown d-inline-block float-right">
@@ -71,9 +148,7 @@
               {% endfor %}
             </div>
           </div>
-          <!-- category-wrap.// -->
         </div>
-        <!-- col.// -->
         <a href="{% url 'store' %}" class="btn btn-outline-primary">Store</a>
         <div class="col-lg col-md-6 col-sm-12 col">
           <form action="{% url 'search' %}" class="search" method="GET">
@@ -85,7 +160,6 @@
                 placeholder="Search"
                 name="keyword"
               />
-
               <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">
                   <i class="fa fa-search"></i>
@@ -93,9 +167,7 @@
               </div>
             </div>
           </form>
-          <!-- search-wrap .end// -->
         </div>
-        <!-- col.// -->
         <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
           <div class="d-flex justify-content-end mb-3 mb-lg-0">
             {% if user.is_authenticated %}
@@ -127,14 +199,8 @@
               >
             </a>
           </div>
-          <!-- widgets-wrap.// -->
         </div>
-        <!-- col.// -->
       </div>
-      <!-- row.// -->
     </div>
-    <!-- container.// -->
   </section>
-  <!-- header-main .// -->
 </header>
-<!-- section-header.// -->
