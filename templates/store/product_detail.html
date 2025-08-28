@@ -3,48 +3,104 @@
 
 {% block content %}
 <style>
-    /* Color circle acts as clickable radio */
-    .color-circle {
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid #ccc;
-        transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .color-circle:hover {
-        transform: scale(1.15);
-        border-color: #000;
-    }
-    .color-circle.selected {
-        border: 2px solid #000;
-    }
+/* Custom Styles for Product Detail Page */
+body {
+    overflow-x: hidden;
+}
+.color-circle {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.color-circle:hover {
+    transform: scale(1.15);
+    border-color: #000;
+}
+.color-circle.selected {
+    border: 3px solid var(--primary-color, #007bff); /* Use a default color if not set */
+    transform: scale(1.15);
+}
+.gallery-thumbs img {
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+.gallery-thumbs img:hover,
+.gallery-thumbs img.selected {
+    border-color: var(--primary-color, #007bff);
+}
+.img-big-wrap {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.img-big-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
 
-    /* Thumbnails */
-    .gallery-thumbs img {
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: border-color 0.2s ease;
-    }
-    .gallery-thumbs img:hover {
-        border-color: #000;
-    }
+/* Star Rating CSS */
+.rate {
+    display: inline-block;
+    border: 0;
+    float: left; /* Keep this to align with the text */
+}
+.rate > input {
+    display: none;
+}
+.rate > label {
+    float: right;
+    width: 1.1em;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #ccc;
+    position: relative;
+}
+.rate > label:before {
+    content: '★';
+    font-family: 'FontAwesome'; /* Make sure FontAwesome is linked in your base.html */
+    margin: 0;
+    padding: 0.3rem .2rem;
+}
+.rate > input:checked ~ label {
+    color: #ffb503;
+}
+.rate > label:hover,
+.rate > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover, 
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+.validation-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none; /* Initially hidden */
+}
 </style>
 
 <section class="section-content padding-y bg">
     <div class="container">
-        <div class="row">
-            <!-- PRODUCT IMAGES -->
+        <div class="row gx-4">
             <aside class="col-md-6">
                 <div class="card">
                     <article class="gallery-wrap">
-                        <!-- MAIN IMAGE -->
                         <div class="img-big-wrap">
                             <img class="main-product-image" src="{{ single_product.image.url }}" alt="{{ single_product.product_name }}">
                         </div>
-
-                        <!-- ONLY VARIATION IMAGES IN THUMBS -->
                         <div class="thumbs-wrap gallery-thumbs d-flex gap-2 mt-2">
                             {% for variation in single_product.variation_set.all %}
                                 {% if variation.image %}
@@ -56,9 +112,8 @@
                 </div>
             </aside>
 
-            <!-- PRODUCT DETAILS -->
             <main class="col-md-6">
-                <form action="{% url 'add_cart' single_product.id %}" method="POST">
+                <form id="add-to-cart-form" action="{% url 'add_cart' single_product.id %}" method="POST">
                     {% csrf_token %}
                     <article class="product-info-aside">
                         <h2 class="title mt-3">{{ single_product.product_name }}</h2>
@@ -67,7 +122,6 @@
                         </div>
                         <p>{{ single_product.description }}</p>
 
-                        <!-- COLOR OPTIONS -->
                         <div class="row mb-3">
                             <div class="item-option-select">
                                 <h6>Choose Color</h6>
@@ -81,11 +135,11 @@
                                     </span>
                                     {% endfor %}
                                 </div>
-                                <input type="hidden" name="color" id="selectedColor" required>
+                                <input type="hidden" name="color" id="selectedColor">
+                                <span id="color-validation-message" class="validation-message">Please select a color.</span>
                             </div>
                         </div>
 
-                        <!-- SIZE OPTIONS -->
                         <div class="row mb-3">
                             <div class="item-option-select">
                                 <h6>Select Size</h6>
@@ -100,7 +154,6 @@
                             </div>
                         </div>
 
-                        <!-- ADD TO CART -->
                         <button type="submit" class="btn btn-primary">
                             <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>
                         </button>
@@ -108,99 +161,92 @@
                 </form>
             </main>
         </div>
-    </div>
-                       <form action="{% url 'submit_review' single_product.id %}" method="POST">
+
+        <div class="row mt-5">
+            <div class="col-md-9">
+                <header class="section-heading mb-4">
+                    <h3>Customer Reviews</h3> 
+                    <hr>
+                </header>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Write Your Review</h5>
+                        <form action="{% url 'submit_review' single_product.id %}" method="POST">
                             {% csrf_token %}
-                            <h5>Write Your Review</h5>
-                            <div>
-
-                                <label>How do you rate this product?</label>
-                                <br>
+                            <div class="mb-3 d-flex align-items-center">
+                                <label class="form-label me-3 mb-0">How do you rate this product?</label>
                                 <div class="rate">
-                                    <input type="radio" name="rating" id="rating10" value="5" ><label for="rating10" title="5"></label>
-                                    <input type="radio" name="rating" id="rating9" value="4.5" ><label for="rating9" title="4.5" class="half"></label>
-                                    <input type="radio" name="rating" id="rating8" value="4" ><label for="rating8" title="4"></label>
-                                    <input type="radio" name="rating" id="rating7" value="3.5"><label for="rating7" title="3.5" class="half"></label>
-                                    <input type="radio" name="rating" id="rating6" value="3" ><label for="rating6" title="3"></label>
-                                    <input type="radio" name="rating" id="rating5" value="2.5" ><label for="rating5" title="2.5" class="half"></label>
-                                    <input type="radio" name="rating" id="rating4" value="2" ><label for="rating4" title="2"></label>
-                                    <input type="radio" name="rating" id="rating3" value="1.5" ><label for="rating3" title="1.5" class="half"></label>
-                                    <input type="radio" name="rating" id="rating2" value="1" ><label for="rating2" title="1"></label>
-                                    <input type="radio" name="rating" id="rating1" value="0.5" required><label for="rating1" title="0.5" class="half"></label>
+                                    <input type="radio" name="rating" id="rating5" value="5" required><label for="rating5" title="5"></label>
+                                    <input type="radio" name="rating" id="rating4" value="4"><label for="rating4" title="4"></label>
+                                    <input type="radio" name="rating" id="rating3" value="3"><label for="rating3" title="3"></label>
+                                    <input type="radio" name="rating" id="rating2" value="2"><label for="rating2" title="2"></label>
+                                    <input type="radio" name="rating" id="rating1" value="1"><label for="rating1" title="1"></label>
                                 </div>
-                                <br>
-
-                                Review Title:
-                                <input type="text" name="subject" class="form-control">
-                                <br>
-                                Your Review:
-                                <textarea name="review" class="form-control" rows="5"></textarea>
-                                <br>
-                                {% if user.is_authenticated %}
-                                  {% if orderproduct %}
-                                <input type="submit" value="Submit Review" class="btn btn-primary">
-                                  {% else %}
-                                <p>You must purchase this product before you can review it.</p>
-                                  {% endif %}
-                                {% endif %}
                             </div>
-                            {% include 'includes/alerts.html' %}
+                            <div class="mb-3">
+                                <label for="review-title" class="form-label">Review Title:</label>
+                                <input type="text" name="subject" id="review-title" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="your-review" class="form-label">Your Review:</label>
+                                <textarea name="review" id="your-review" class="form-control" rows="5"></textarea>
+                            </div>
+
+                            {% if user.is_authenticated %}
+                                {% if orderproduct %}
+                                <input type="submit" value="Submit Review" class="btn btn-primary">
+                                {% else %}
+                                <p class="text-muted">You must purchase this product before you can review it.</p>
+                                {% endif %}
+                            {% else %}
+                            <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to submit your review.</p>
+                            {% endif %}
                         </form>
-                        <br>
-                        
-<div class="row">
-			<div class="col-md-9">
+                    </div>
+                </div>
 
-	<header class="section-heading">
-		<h3>Customer Reviews </h3>  
-		
-	</header>
-			<img src="{% static 'images/avatars/avatar1.jpg' %}" class="img-xs icon rounded-circle">
-
-	<article class="box mb-3">
-		<div class="icontext w-100">
-			<div class="text">
-				<span class="date text-muted float-md-right">24.04.2020 </span>  
-				<h6 class="mb-1">Mike John </h6>
-				
-			</div>
-		</div> <!-- icontext.// -->
-		<div class="mt-3">
-			<p>
-				Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-				quis nostrud exercitation ullamco laboris nisi ut aliquip
-			</p>	
-		</div>
-	</article>
-
-	
-
-	</div> <!-- col.// -->
+                <article class="box mb-3">
+                    <div class="icontext w-100">
+                        <img src="{% static 'images/avatars/avatar1.jpg' %}" class="img-xs icon rounded-circle me-3" alt="User Avatar">
+                        <div class="text">
+                            <span class="date text-muted float-md-right">24.04.2020 </span> 
+                            <h6 class="mb-1">Mike John </h6>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p>
+                            Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            quis nostrud exercitation ullamco laboris nisi ut aliquip
+                        </p> 
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
 </section>
 
-<!-- JS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const colorCircles = document.querySelectorAll('.color-circle');
     const selectedColorInput = document.getElementById('selectedColor');
     const mainImage = document.querySelector('.main-product-image');
     const thumbs = document.querySelectorAll('.gallery-thumbs img');
+    const addToCartForm = document.getElementById('add-to-cart-form');
+    const colorValidationMessage = document.getElementById('color-validation-message');
 
     // Select color by clicking circle
     colorCircles.forEach(circle => {
         circle.addEventListener('click', function() {
-            // remove old selection
             colorCircles.forEach(c => c.classList.remove('selected'));
-            // mark new
             this.classList.add('selected');
-            // set hidden input
             selectedColorInput.value = this.getAttribute('data-color');
-            // switch main image
             const newImage = this.getAttribute('data-image');
             if (newImage) {
                 mainImage.src = newImage;
             }
+            colorValidationMessage.style.display = 'none'; // Hide error message on selection
         });
     });
 
@@ -209,6 +255,14 @@ document.addEventListener('DOMContentLoaded', function() {
         thumb.addEventListener('click', function() {
             mainImage.src = this.src;
         });
+    });
+
+    // Form validation for color selection
+    addToCartForm.addEventListener('submit', function(e) {
+        if (!selectedColorInput.value) {
+            e.preventDefault(); // Stop form submission
+            colorValidationMessage.style.display = 'block'; // Show error message
+        }
     });
 });
 </script>
