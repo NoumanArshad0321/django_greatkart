@@ -39,3 +39,12 @@ input :checked + label:hover, input:checked ~ label:hover,input:checked ~ label:
 label:hover ~ input:checked ~ label{
     color: #cc9000;
 }
+
+.rating-star{
+    color:#ffb503;
+}
+.review-count {
+    color: #333;     /* Normal text color (black/gray) */
+    margin-left: 8px;
+    font-size: 14px;
+}
