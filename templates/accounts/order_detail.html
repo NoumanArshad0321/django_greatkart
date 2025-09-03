@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 500px;">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+             <div class="text-center mb-4">
+                <img src="{% static 'images/logo.png' %}" alt="Cloots Logo" height="35" class="mb-2">
+                <h5 class="fw-bold mb-1 text-primary">Ordered Detail Page</h5>
+                
+                <small class="fw-bold text-muted d-block mt-2">Order #{{ order.order_number }}</small>
+                
+            </div>
+
+        
+
+            <hr class="my-4">
+
+            <div class="mb-4">
+                <h6 class="fw-bold text-primary mb-2">Order Details</h6>
+                <div class="row small g-2">
+                    <div class="col-12">
+                        <p class="mb-0"><strong>Name:</strong> {{ order.full_name }}</p>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-0"><strong>Phone:</strong> {{ order.phone }}</p>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-0"><strong>Email:</strong> {{ order.email }}</p>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-0"><strong>Address:</strong> {{ order.full_address }}</p>
+                    </div>
+                    {% if order.order_note %}
+                    <div class="col-12">
+                        <p clatailss="mb-0"><strong>Note:</strong> {{ order.order_note }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="mb-4">
+                <h6 class="fw-bold text-primary mb-2">Items Ordered</h6>
+                <ul class="list-unstyled mb-0">
+                    {% for item in order_detail %}
+                    <li class="d-flex align-items-center py-2 border-bottom">
+                        <img src="{{ item.product.image.url }}" class="rounded me-3" style="width: 45px; height: 45px; object-fit: cover;">
+                        <div class="flex-grow-1">
+                            <p class="mb-0 fw-bold">{{ item.product.product_name }}</p>
+                            {% if item.variations.all %}
+                            <small class="text-muted">
+                                {% for v in item.variations.all %}
+                                {{ v.variation_category|capfirst }}: {{ v.variation_value|capfirst }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </small>
+                            {% endif %}
+                        </div>
+                        <span class="text-muted small">x{{ item.quantity }}</span>
+                        <span class="fw-bold ms-3">${{ item.sub_total }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="mb-4">
+                <h6 class="fw-bold text-primary mb-2">Payment Summary</h6>
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td class="text-end">${{ total|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Tax:</td>
+                        <td class="text-end">${{ order.tax|floatformat:2 }}</td>
+                    </tr>
+                    <tr class="fw-bold border-top">
+                        <td class="fs-6">Total:</td>
+                        <td class="text-end fs-6">${{ grand_total|floatformat:2 }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>
+
+<style>
+/* Custom styles for this page */
+.card-body .fw-bold.text-primary {
+    color: var(--primary-color) !important;
+}
+.list-unstyled li {
+    border-bottom: 1px solid #eee !important;
+}
+.list-unstyled li:last-child {
+    border-bottom: none !important;
+}
+.table td {
+    border-top: none;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+</style>
+
+{% endblock %}
