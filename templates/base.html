@@ -1,204 +1,178 @@
 {% load static %}
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Cloots - Premium Online Shopping Platform">
-<meta name="keywords" content="E-commerce, Online Shopping, Fashion, Electronics, Luxury">
-<meta name="author" content="Cloots">
+    <!-- ========================= META ========================= -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cloots - Premium Online Shopping Platform">
+    <meta name="keywords" content="E-commerce, Online Shopping, Fashion, Electronics, Luxury">
+    <meta name="author" content="Cloots">
 
-<title>Cloots | Modern Apparel & Footwear</title>
+    <title>{% block title %}Cloots | Modern Apparel & Footwear{% endblock %}</title>
 
-<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <!-- ========================= FAVICON ========================= -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ========================= FONTS ========================= -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- ========================= CSS ========================= -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'fonts/fontawesome/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/ui.css' %}" rel="stylesheet">
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'css/premium.css' %}" rel="stylesheet">
 
-<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
-<link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'css/premium.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- ========================= PERFORMANCE ========================= -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'js/script.js' %}"></script>
+    <!-- ========================= GLOBAL STYLE ========================= -->
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --accent-color: #0097a7;
+            --text-color: #333;
+            --bg-light: #f9f9f9;
+            --footer-bg: #1a237e;
+            --footer-text: #e0e0e0;
+        }
 
-<style>
-/* ========================= Global & Color Palette ========================= */
-:root {
-    --primary-color: #1a237e; /* Deep Blue */
-    --accent-color: #1a237e; /* Cyan */
-    --text-color: #333;
-    --bg-light: #f5f5f5;
-    --footer-bg: #1a237e;
-    --footer-text: #e0e0e0;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-color);
-    line-height: 1.6;
-}
+        h1,h2,h3,h4,h5,h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
 
-h1,h2,h3,h4,h5,h6 {
-    font-family: 'Montserrat', sans-serif;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-weight: 700;
-}
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--accent-color);
+        }
 
-a {
-    color: var(--primary-color);
-    transition: all 0.3s ease;
-}
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            padding: 0.6rem 1.8rem;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #2c388e;
+        }
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50px;
+            padding: 0.5rem 1.6rem;
+            font-weight: 500;
+        }
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
 
-a:hover {
-    color: #004080;
-    text-decoration: none;
-}
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            text-align: center;
+        }
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+            display: block;
+            margin: 10px auto 0;
+        }
 
-.text-primary {
-    color: var(--primary-color) !important;
-}
+        /* Cards */
+        .card {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
-/* ========================= Navbar ========================= */
-.navbar {
-    padding: 1rem 2rem;
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-}
+        /* Footer */
+        .footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 3rem 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .footer a {
+            color: var(--footer-text);
+        }
+        .footer a:hover {
+            color: #fff;
+        }
 
-.navbar a.nav-link:hover {
-    color: var(--primary-color);
-}
-
-/* ========================= Footer ========================= */
-.footer {
-    background-color: var(--footer-bg);
-    color: var(--footer-text);
-    padding: 3rem 2rem;
-    font-size: 0.9rem;
-}
-
-.footer a {
-    color: var(--footer-text);
-    transition: 0.3s;
-}
-
-.footer a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-}
-
-/* ========================= Buttons ========================= */
-.btn-primary {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-    border-radius: 50px;
-    padding: 0.6rem 2rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background: #2c388e;
-    border-color: #2c388e;
-    transform: translateY(-2px);
-}
-
-.btn-primary:active,
-.btn-primary:focus {
-    background-color: #2c388e !important;
-    border-color: #2c388e !important;
-    box-shadow: none !important;
-}
-
-.btn-outline-primary {
-    color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.btn-outline-primary:hover {
-    background-color: var(--primary-color);
-    color: #ffffff;
-}
-
-.btn-outline-primary:active,
-.btn-outline-primary:focus {
-    background-color: var(--primary-color) !important;
-    color: #ffffff !important;
-    box-shadow: none !important;
-}
-
-/* ========================= Cards & Sections ========================= */
-.card {
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-}
-
-.section {
-    padding: 80px 0;
-}
-
-.section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    position: relative;
-    color: var(--primary-color);
-}
-
-.section-title::after {
-    content: '';
-    width: 60px;
-    height: 3px;
-    background: var(--primary-color);
-    display: block;
-    margin: 8px auto 0;
-    border-radius: 2px;
-}
-
-/* ========================= Smooth Scroll Anchor Links ========================= */
-html {
-    scroll-behavior: smooth;
-}
-</style>
-
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 60px 0;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-{% include 'includes/navbar.html' %}
+    <!-- ========================= NAVBAR ========================= -->
+    {% include 'includes/navbar.html' %}
 
-<main class="pt-4">
-    {% block content %}
-    {% endblock %}
-</main>
+    <!-- ========================= MAIN CONTENT ========================= -->
+    <main class="pt-4">
+        {% block content %}{% endblock %}
+    </main>
 
-{% include 'includes/footer.html' %}
+    <!-- ========================= FOOTER ========================= -->
+    {% include 'includes/footer.html' %}
 
-<script>
-$(document).ready(function(){
-    $("a[href^='#']").on('click', function(e) {
-        e.preventDefault();
-        $('html, body').animate({
-            scrollTop: $($(this).attr('href')).offset().top
-        }, 600, 'linear');
-    });
-});
-</script>
+    <!-- ========================= SCRIPTS ========================= -->
+    <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <!-- Smooth Scroll -->
+    <script>
+        document.querySelectorAll("a[href^='#']").forEach(anchor => {
+            anchor.addEventListener("click", function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute("href"))
+                    .scrollIntoView({ behavior: "smooth" });
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -117,18 +117,15 @@ body {
                     {% csrf_token %}
                     <article class="product-info-aside">
                         <h2 class="title mt-3">{{ single_product.product_name }}</h2>
-                        
-                        <div class="rating-star">
+                         <div class="rating-star">
                             <span>
-
-                            <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
-        
+                                <i class="{% if single_product.averageReview >= 0.5 %}{% if single_product.averageReview < 1 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 1.5 %}{% if single_product.averageReview < 2 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 2.5 %}{% if single_product.averageReview < 3 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 3.5 %}{% if single_product.averageReview < 4 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 4.5 %}{% if single_product.averageReview < 5 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
                             </span>
-    <span class="review-count"> {{ single_product.countReview }} reviews</span>
+                <span class="review-count"> {{ single_product.countReview }} reviews</span>
                         </div>
                         
 
@@ -181,18 +178,17 @@ body {
             <div class="col-md-9">
                 <header class="section-heading mb-4">
                     <h3>Customer Reviews </h3>
-                    <span>
-                        <div class="rating-star">
-
-                            <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview < 2 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
-                            <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview < 5 %}-half-o{% endif %}" aria-hidden="true"></i>
-        <span class="review-count"> {{ single_product.countReview }} reviews</span>
+                    
+                     <div class="rating-star">
+                            <span>
+                                <i class="{% if single_product.averageReview >= 0.5 %}{% if single_product.averageReview < 1 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 1.5 %}{% if single_product.averageReview < 2 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 2.5 %}{% if single_product.averageReview < 3 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 3.5 %}{% if single_product.averageReview < 4 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if single_product.averageReview >= 4.5 %}{% if single_product.averageReview < 5 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                            </span>
+                <span class="review-count"> {{ single_product.countReview }} reviews</span>
                         </div>
-    
-                    </span>
                     
 
                       

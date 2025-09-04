@@ -33,6 +33,17 @@
                     <figcaption class="info-wrap text-center">
                         <a href="{{ product.get_url }}" class="title d-block fw-semibold text-dark mb-2">{{ product.product_name }}</a>
                         <div class="price fw-bold text-primary mb-2">${{ product.price }}</div>
+                        <div class="rating-star">
+                            <span>
+                                <i class="{% if product.averageReview >= 0.5 %}{% if product.averageReview < 1 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if product.averageReview >= 1.5 %}{% if product.averageReview < 2 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if product.averageReview >= 2.5 %}{% if product.averageReview < 3 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if product.averageReview >= 3.5 %}{% if product.averageReview < 4 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                                <i class="{% if product.averageReview >= 4.5 %}{% if product.averageReview < 5 %}fas fa-star-half-alt{% else %}fas fa-star{% endif %}{% else %}far fa-star{% endif %}"></i>
+                            </span>
+                        </div>
+
+
                     </figcaption>
                 </div>
             </div>

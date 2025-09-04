@@ -1,93 +1,156 @@
 {% load static %}
 
-<footer class="section-footer border-top">
-    <div class="container">
-        <section class="footer-main padding-y">
-            <div class="row">
-                <aside class="col-12 col-sm-6 col-lg-3">
-                    <h6 class="title">About Cloots</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Our Story</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </aside>
-                <aside class="col-12 col-sm-6 col-lg-3">
-                    <h6 class="title">Customer Service</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Returns & Exchanges</a></li>
-                        <li><a href="#">Shipping Information</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </aside>
-                <aside class="col-12 col-sm-6 col-lg-3">
-                    <h6 class="title">Legal</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                    </ul>
-                </aside>
-                <aside class="col-12 col-sm-6 col-lg-3">
-                    <h6 class="title">Stay Connected</h6>
-                    <div class="d-flex">
-                        <a href="#" class="btn btn-icon btn-outline-light me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-icon btn-outline-light me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn btn-icon btn-outline-light me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="btn btn-icon btn-outline-light"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </aside>
-            </div>
-        </section>
+<footer class="section-footer">
+  <div class="container">
+    <!-- ====== Main Footer ====== -->
+    <section class="footer-main padding-y">
+      <div class="row gy-4">
+        <!-- About -->
+        <aside class="col-12 col-sm-6 col-lg-3 footer-col">
+          <h6 class="title" data-bs-toggle="collapse" data-bs-target="#footerAbout" aria-expanded="false" aria-controls="footerAbout">
+            About Cloots <i class="fas fa-chevron-down toggle-icon"></i>
+          </h6>
+          <ul class="list-unstyled collapse d-sm-block" id="footerAbout">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </aside>
 
-        <section class="footer-bottom border-top row align-items-center">
-            <div class="col-md-7">
-                <p class="mb-0 text-muted">© 2025 Cloots. All rights reserved.</p>
-            </div>
-            <div class="col-md-5 text-md-end">
-                <i class="fab fa-lg fa-cc-visa text-muted me-2"></i>
-                <i class="fab fa-lg fa-cc-paypal text-muted me-2"></i>
-                <i class="fab fa-lg fa-cc-mastercard text-muted"></i>
-            </div>
-        </section>
-    </div>
+        <!-- Customer Service -->
+        <aside class="col-12 col-sm-6 col-lg-3 footer-col">
+          <h6 class="title" data-bs-toggle="collapse" data-bs-target="#footerService" aria-expanded="false" aria-controls="footerService">
+            Customer Service <i class="fas fa-chevron-down toggle-icon"></i>
+          </h6>
+          <ul class="list-unstyled collapse d-sm-block" id="footerService">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Returns & Exchanges</a></li>
+            <li><a href="#">Shipping Information</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </aside>
+
+        <!-- Legal -->
+        <aside class="col-12 col-sm-6 col-lg-3 footer-col">
+          <h6 class="title" data-bs-toggle="collapse" data-bs-target="#footerLegal" aria-expanded="false" aria-controls="footerLegal">
+            Legal <i class="fas fa-chevron-down toggle-icon"></i>
+          </h6>
+          <ul class="list-unstyled collapse d-sm-block" id="footerLegal">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </aside>
+
+        <!-- Socials -->
+        <aside class="col-12 col-sm-6 col-lg-3 footer-col">
+          <h6 class="title">Stay Connected</h6>
+          <div class="d-flex gap-2">
+            <a href="#" class="btn-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="btn-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="btn-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="btn-icon"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ====== Bottom Footer ====== -->
+    <section class="footer-bottom border-top pt-3 pb-2 row align-items-center">
+      <div class="col-md-7 text-center text-md-start mb-2 mb-md-0">
+        <p class="mb-0 text-muted small">© 2025 Cloots. All rights reserved.</p>
+      </div>
+      <div class="col-md-5 text-center text-md-end">
+        <i class="fab fa-lg fa-cc-visa me-2 text-light"></i>
+        <i class="fab fa-lg fa-cc-paypal me-2 text-light"></i>
+        <i class="fab fa-lg fa-cc-mastercard text-light"></i>
+      </div>
+    </section>
+  </div>
 </footer>
 
 <style>
 /* ========================= FOOTER STYLES ========================= */
 .section-footer {
-    background-color: #0056b3;
-    color: var(--footer-text);
+  background: #002d6b;
+  color: #dcdcdc;
+  padding-top: 2rem;
 }
 
 .section-footer a {
-    color: var(--footer-text);
-    transition: color 0.3s ease;
+  color: #dcdcdc;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 0.95rem;
 }
-
 .section-footer a:hover {
-    color: #0056b3;
+  color: #00bcd4;
+  padding-left: 4px;
 }
 
 .section-footer .title {
-    font-weight: 600;
-    font-size: 1rem;
-    color: #ffffff;
-    margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.section-footer .title .toggle-icon {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+/* When accordion is open */
+.section-footer .title[aria-expanded="true"] .toggle-icon {
+  transform: rotate(180deg);
 }
 
 .section-footer .list-unstyled li {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
+/* Social Buttons */
 .btn-icon {
-    width: 40px;
-    height: 40px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+.btn-icon:hover {
+  background: #00bcd4;
+  border-color: #00bcd4;
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,188,212,0.3);
+}
+
+/* Bottom Footer */
+.footer-bottom {
+  border-color: rgba(255,255,255,0.1) !important;
+}
+.footer-bottom .text-muted {
+  color: rgba(255,255,255,0.6) !important;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 767.98px) {
+  .section-footer aside {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+  }
+  .section-footer ul {
+    padding-left: 0.5rem;
+  }
 }
 </style>
